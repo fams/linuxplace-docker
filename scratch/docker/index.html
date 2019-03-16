@@ -39,7 +39,13 @@
         width: 100%;
         top:50%;
         /*vertical-align: middle;*/
-        margin-top: 50px;
+        margin-top: 20px;
+      }
+      .full-image-height img{
+        height: 100%;
+/*        top:50%;*/
+        /*vertical-align: middle;*/
+        margin-top: 20px;
       }
       .half-image img{
         width: 50%;
@@ -103,7 +109,11 @@ Notes for the _first_ slide!
     <script src="out/remark-latest.min.js" type="text/javascript">
     </script>
     <script type="text/javascript">
-      var slideshow = remark.create({ sourceUrl: 'Docker.md', highlightLanguage: 'javascript'});
+      var slideshow = remark.create({
+        sourceUrl: 'Docker.md',
+        highlightLanguage: 'javascript',
+        countIncrementalSlides: false
+     });
     </script>
   </body>
 </html>

@@ -3,7 +3,7 @@ layout: true
 class: center, middle, inverse
 
 ---
-
+count:false
 # Docker - Infraestrutura imutavel
 ![logo-docker](img/docker_logo.png)
 # by [@famsbh](http://twitter.com/famsbh)
@@ -23,12 +23,31 @@ class: left, top
 ---
 template: conteudo
 
-# Porque usar Containers?
+# Agenda
+
+### Dia 1
+ - Por que usar Containers?
+ - Instalando em Linux
+ - Docker em Windows
+ - Docker Containers
+ - Docker Images
+ - Criando uma imagem
+
+### Dia 2
+ - Docker Compose
+ - Docker network
+ - Docker Volumes
+ - Docker Security
+
+---
+
+# Por que usar Containers?
 ### 300% time to market
 ???
 - Agilidade de implantação de novas soluções
 
 --
+
 
 ### 1300% Produtividade de desenvolvimento
 ???
@@ -147,13 +166,9 @@ template: conteudo
 
 ---
 
-# Docker Cheat Sheet
-- https://www.docker.com/sites/default/files/Docker_CheatSheet_08.09.2016_0.pdf
-
----
 # O que é um container
 ### Virtualização de Hardware
-### Virtualização de Software
+### Virtualização de Sistema Operacional
 .nb-table[
 <table>
 <tr><td>.half-image[![Container x Instance](/img/container_stack.png)]</td><td> .half-image[![Container x Instance](/img/vm_stack.png)]</td></tr>
@@ -163,13 +178,22 @@ template: conteudo
 ---
 
 # Historia dos containers
-### 1979: Unix V7
+### 1979: Unix V7 chroot
 ### 2000: FreeBSD Jails
 ### 2001: Linux VServer
 ### 2003: CKRM
 ### 2004: Solaris Containers
 ### 2005: Open VZ (Open Virtuzzo)
 ### 2006: Process Containers (Cgroups)
+
+???
+- choot namespace filesystem
+- Jails IP no chroot
+- VServer (particionamento de recursos)
+- CKRM Kernel Resource Manager tentativa de AIX WLM
+- Solaris Containers - Bem proximos de um container atual, mas a idéia era instalar todo o sistema para virtualizar competindo com o IBM LPAR
+- Open VZ mesma ideia do Solaris
+- Cgroups Isolamento de recursos e limites base do docker
 
 ---
 # Historia dos containers
@@ -183,9 +207,22 @@ template: conteudo
 ### 2017: OCI 1.0
 ### 2018: K8S Mainstream
 
+???
+ - Linux Containers. Cgroups, namespaces sem patch
+ - CloudFondry Warden, agora fazem parte do OCI.
+ - implementação open do gerenciador de containers do google
+ - ...
+ - Orquestrador vindo do BORG.
+ - Open Container Initiative
+ - Mainstrea
+
 ---
 
-# Instalando Docker
+# Docker Cheat Sheet
+- https://www.docker.com/sites/default/files/Docker_CheatSheet_08.09.2016_0.pdf
+
+---
+# LAB 1 - Instalando Docker
 
 ### Instalando Docker em linux
 - Remova o docker da distribuição
@@ -199,13 +236,32 @@ template: conteudo
 ```bash
 $ sudo wget -qO- https://get.docker.com/ | sh
 ```
+http://hub.docker.com
+
 ???
 
 ---
 
 # Instalando Docker em Linux
+
+### Instalar o docker-machine
+```bash
+$ sudo base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+```
+### Instalar o docker-compose
+```bash
+$ sudo curl -L https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+```
+
+
+---
+
+# Instalando Docker em Linux
 ```terminal
-[root@dockervm tmp]# docker version
+[root@dockervm tmp]$ sudo docker version
 Client:
  Version:           18.09.3
  API version:       1.39
@@ -229,87 +285,248 @@ Server: Docker Engine - Community
 ```bash
 $ sudo systemctl start docker
 ```
+--
+
+ ```bash
+ $ sudo docker info
+ ```
+???
+
+ O erro ao rodar o docker a primeira vez vem de não start do docker
+
 
 ---
+
 # Instalando Docker em Linux
 
-### Instalar o docker-machine
-```terminal
-$ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
-  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
-  sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+- Adicionar o usuario pessoal ao grupo docker
+
+```bash
+ $ sudo usermod -aG docker $USER
+ $ docker info
+ $ docker version
+```
+
+---
+### LAB 2 - executando o primeiro container
+
+```bash
+$ docker image pull bash
+```
+```bash
+$ docker container run bash
+```
+- Ctrl+PQ
+
+```bash
+$ docker container ps
+```
+--
+
+```bash
+$ docker container run --detach -p8080:80 nginx
+```
+
+---
+# Docker image
+```bash
+$ docker image ls
+$ docker image rm
+$ docker image pull
 ```
 
 ---
 
 # LAB 1
-- docker image pull
-- docker container run bash
-- Ctrl+PQ
-- docker container ps
+### Estrutura de linha de commando docker
+ - modo antigo : docker &lt;command&gt; (options)
+ - modo novo: docker &lt;command&gt; &lt;sub-command&gt; (options)
 
 
 ---
+# Contruindo uma imagem
 
-# LAB1
-- docker container run --detach -p8080:80 nginx
+- Dockerfile (build)
+- docker build (build)
+- docker push (ship)
+
+
+# Dockerfile
+```dockerfile
+FROM ubuntu:16.04
+LABEL mantainer=fams@linuxplace.com.br
+COPY ./docker/ /var/www/html
+EXPOSE 80
+RUN apt-get update -y && apt-get install --no-install-recommends python3 -y
+WORKDIR  /var/www/html
+ENTRYPOINT [ "python3", "-m", "http.server", "80" ]
+```
+
+---
+# Build
+```bash
+$ docker build . -t curso:latest
+$ docker run -d -p 8080:80 curso:latest
+```
+
+---
+# Dockerfile
+ - Descrever a aplicação
+ - Ensinar o docker como criar o container
+
+
+---
+# build layers
+.full-image-height[![Docker Model](img/build.svg)]
+
+---
+# Comandos de image build
+- docker build -t curso:latest .
+- -t tag
+- . para usar o diretório atual como workdir do build
 
 ---
 
-# Historia do Container
-
----
-# Cgroups
-
----
-
-# LAB 1
+# inspect image
+```bash
+$ docker image inspect curso
+$ dive curso
+```
 
 ---
 
-# Cgroups
+# Comandos Dockerfile
+#### Estrutura
+ - # Comment
+ - INSTRUCTION arguments
 
 ---
-# LXC
----
+# Comandos
+- FROM
+- COPY
+- LABEL
+- ENV
+- WORKDIR
+- RUN
+- ENTRYPOINT
+- USER
+- STOPSIGNAL
 
 ---
 
-# docker-compose
+template: splash
+
+
+# Docker Containers Internals
+### Entendendo de verdade
+
+---
+template: conteudo
+# Componentes
+
+- Docker client
+- Docker daemon
+- containerd
+- runc
+- shim
+- docker HUB
 
 ---
 
-# docker-machine
+# Docker container Model
+
+.full-image-height[![Docker Model](img/dockervelho.svg)]
+
+---
+
+# Docker container Model
+
+.full-image-height[![Docker Model](img/dockernovo.svg)]
+
+---
+
+# Docker Client
+
+- cmdline
+- comunica com o Daemon por CRUD REST
+- comunicacão tcp, socket
+- tls security
+- auth plugins
+
+---
+
+# Docker Daemon
+- Serve a API
+- network services
+- comunicação com o mundo
+- Acesso ao Docker HUB
+- REST com client
+- GRPC com containerd
+
+---
+
+# containerd
+- Parte da estratégia de remover codigo do daemon
+- Gerencia o ciclo de vida do container (start, stop, pause)
+- Gerencia as imagens (prepara para o runc)
+- OCI
+
+---
+
+# runc
+- implementação de wrapper para  libcontainer
+- especificacão OCI
+- Morre após a carga
+- Problema de segurança em 2019
+
+--
+### shim
+ - captura stdin, stdout dos processos
+ - permite os containers funcionarem detached
+
+---
+# Internals CGROUPS
+
+- Hierarquias
+ - CPU
+ - Memory
+ - blkio
+ - devices
+
+---
+# Namespaces
+.full-image[![CGroups](img/control-groups-for-docker.jpg)]
+
+---
+
+# Namespaces
+ - pid
+ - net
+ - mnt
+ - uts
+ - ipc
+ - user
+
+---
+
+# Drop Privileges/Security
+- AppArmor
+- Selinux
+- CAP_ADMIN
 
 ---
 
 # Docker Images
+- Dockerfile
+- imagens em camadas
+- docker HUB
+- imagens oficiais
 
 ---
 
-# Teoria Images
+template: splash
 
----
+# Docker Containers Network
+### Rede
 
-# Lab Images simple
-
----
-
-## Docker Containers
-
----
-
-# Teoria Containers
-
----
-
-# Lab Containers  Simple
-
-
----
-
-
-# Segurança Docker
-
----
 
