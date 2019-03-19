@@ -310,18 +310,39 @@ $ sudo systemctl start docker
 ---
 ### LAB 2 - executando o primeiro container
 
+#### Executando um container _interativo_
+ - Download da imagem
 ```bash
 $ docker image pull bash
 ```
+ - Executando o container interativo *-it*
 ```bash
-$ docker container run bash
+$ docker container run  -it bash
+```
+- Sair do shell (Ctrl+D ou exit)
+
+```bash
+$ docker container ps
+$ docker container ps -a
+```
+
+--
+
+#### Executando um container _interativo_ e deixando-o vivo
+
+```bash
+$ docker container run  -it bash
 ```
 - Ctrl+PQ
 
 ```bash
 $ docker container ps
+$ docker container ps -a
 ```
+
 --
+
+#### Executando um container em segundo plano
 
 ```bash
 $ docker container run --detach -p8080:80 nginx
