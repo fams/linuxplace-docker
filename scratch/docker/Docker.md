@@ -438,8 +438,8 @@ $ dive curso
 ---
 # Publish
 ```bash
-$ docker container tag $USERNAME/curso
-$ docker container push $USERNAME/curso
+$ docker image tag $USERNAME/curso
+$ docker image push $USERNAME/curso
 ```
 
 
