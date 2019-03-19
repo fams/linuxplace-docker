@@ -308,7 +308,7 @@ $ sudo systemctl start docker
 ```
 
 ---
-### LAB 2 - executando o primeiro container
+### LAB 2 - RUN
 
 #### Executando um container _interativo_
  - Download da imagem
@@ -326,8 +326,8 @@ $ docker container ps
 $ docker container ps -a
 ```
 
---
-
+---
+#LAB 2 - RUN
 #### Executando um container _interativo_ e deixando-o vivo
 
 ```bash
@@ -340,8 +340,8 @@ $ docker container ps
 $ docker container ps -a
 ```
 
---
-
+---
+#LAB 2 - RUN
 #### Executando um container em segundo plano
 
 ```bash
@@ -349,6 +349,7 @@ $ docker container run --detach -p8080:80 nginx
 ```
 
 ---
+#LAB 2 - RUN
 # Docker image
 ```bash
 $ docker image ls
@@ -357,19 +358,34 @@ $ docker image pull
 ```
 
 ---
-
-# LAB 1
+# Entendendo
 ### Estrutura de linha de commando docker
  - modo antigo : docker &lt;command&gt; (options)
+
+```bash
+   $ docker run -it bash
+   $ docker pull bash
+```
+
  - modo novo: docker &lt;command&gt; &lt;sub-command&gt; (options)
 
+```bash
+  $ docker container run -it bash
+  $ docker image pull bash
+```
 
 ---
 # Contruindo uma imagem
+- BUILD, SHIP, RUN
 
 - Dockerfile (build)
 - docker build (build)
+
+--
 - docker push (ship)
+
+--
+- docker run (run)
 
 
 # Dockerfile
@@ -383,18 +399,17 @@ WORKDIR  /var/www/html
 ENTRYPOINT [ "python3", "-m", "http.server", "80" ]
 ```
 
+--
+#### Dockerfile
+ - Descrever a aplicação
+ - Ensinar o docker como criar o container
+
 ---
-# Build
+# BUILD
 ```bash
 $ docker build . -t curso:latest
 $ docker run -d -p 8080:80 curso:latest
 ```
-
----
-# Dockerfile
- - Descrever a aplicação
- - Ensinar o docker como criar o container
-
 
 ---
 # build layers
@@ -415,6 +430,18 @@ $ dive curso
 ```
 
 ---
+# SHIP
+- Fazer login no docker hub
+- criar o repositório
+- publicar seu container
+
+---
+# Publish
+```bash
+$ docker container tag $USERNAME/curso
+$ docker container push $USERNAME/curso
+```
+
 
 # Comandos Dockerfile
 #### Estrutura
