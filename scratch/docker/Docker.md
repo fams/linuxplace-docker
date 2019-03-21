@@ -308,6 +308,12 @@ $ sudo systemctl start docker
 ```
 
 ---
+# Instalando o Docker em MAC
+- Download Docker for Mac (DfM)
+- Instalação
+- Preferências
+
+---
 ### LAB 2 - RUN
 
 #### Executando um container _interativo_
@@ -356,7 +362,6 @@ $ docker image ls
 $ docker image rm
 $ docker image pull
 ```
-
 ---
 # Entendendo
 ### Estrutura de linha de commando docker
@@ -375,7 +380,14 @@ $ docker image pull
 ```
 
 ---
-# Contruindo uma imagem
+# Gerenciando multiplos containers
+- Aplicativos interligados
+```bash
+$ docker container run redis -name redis
+
+
+---
+# Construindo uma imagem
 - BUILD, SHIP, RUN
 
 - Dockerfile (build)
@@ -387,6 +399,7 @@ $ docker image pull
 --
 - docker run (run)
 
+---
 
 # Dockerfile
 ```dockerfile
@@ -412,10 +425,6 @@ $ docker run -d -p 8080:80 curso:latest
 ```
 
 ---
-# build layers
-.full-image-height[![Docker Model](img/build.svg)]
-
----
 # Comandos de image build
 - docker build -t curso:latest .
 - -t tag
@@ -430,6 +439,10 @@ $ dive curso
 ```
 
 ---
+# build layers
+.full-image-height[![Docker Model](img/build.svg)]
+
+---
 # SHIP
 - Fazer login no docker hub
 - criar o repositório
@@ -442,23 +455,25 @@ $ docker image tag $USERNAME/curso
 $ docker image push $USERNAME/curso
 ```
 
-
+---
 # Comandos Dockerfile
 #### Estrutura
- - # Comment
+ - \#Comment
  - INSTRUCTION arguments
 
 ---
 # Comandos
 - FROM
-- COPY
+- COPY & ADD
 - LABEL
 - ENV
 - WORKDIR
 - RUN
+- EXPOSE
 - ENTRYPOINT
 - USER
 - STOPSIGNAL
+- VOLUME
 
 ---
 
