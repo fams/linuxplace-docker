@@ -345,6 +345,13 @@ $ docker container run  -it bash
 $ docker container ps
 $ docker container ps -a
 ```
+--
+- Anexando ao container
+
+```bash
+$ docker container ls
+$ docker container attach $container
+```
 
 ---
 #LAB 2 - RUN
@@ -354,6 +361,10 @@ $ docker container ps -a
 $ docker container run --detach -p8080:80 nginx
 ```
 
+--
+- Não anexar o TTY --detach ou -d
+- Exportar a porta do container no host local -p{local}:{container}
+
 ---
 #LAB 2 - RUN
 # Docker image
@@ -361,8 +372,11 @@ $ docker container run --detach -p8080:80 nginx
 $ docker image ls
 $ docker image rm
 $ docker image pull
+$ docker container inspect
 ```
+
 ---
+
 # Entendendo
 ### Estrutura de linha de commando docker
  - modo antigo : docker &lt;command&gt; (options)
@@ -379,14 +393,9 @@ $ docker image pull
   $ docker image pull bash
 ```
 
----
-# Gerenciando multiplos containers
-- Aplicativos interligados
-```bash
-$ docker container run redis -name redis
-
 
 ---
+
 # Construindo uma imagem
 - BUILD, SHIP, RUN
 
@@ -476,7 +485,65 @@ $ docker image push $USERNAME/curso
 - VOLUME
 
 ---
+# Comunicação entre containers
+ - EXPOSE
+ - \-p
+ - docker create network
 
+# Iniciando containers intergrados
+```bash
+$ docker network create curso
+$ docker run -d --network curso --name redis redis -v ./redis-data:/data
+$ docker run -d --network curso --name contador -p 5000:5000 contador
+```
+
+---
+# Gerenciando multiplos containers com docker-compose
+- Um arquivo de configuração para todo o ambiente
+- Define todo o ambiente do Dockerfile para serem reproduzíveis
+- Define os serviços de um container para executarem em um abiente isolado
+- Gerencia o ciclo de vida de todos os containers descritos
+
+---
+# docker-compose.yaml
+```yaml
+version: '3'
+services:
+  contador:
+    image: "fams/contador:latest"
+    ports:
+     - "5000:5000"
+    networks:
+      - contador
+
+  redis:
+    image: "redis:latest"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - contador
+
+networks:
+  contador:
+```
+
+---
+# docker-compose volumes
+```yaml
+version: '3'
+services:
+  redis:
+  ...
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - redis-data:/data
+...
+volumes:
+  redis-data:
+```
+
+---
 template: splash
 
 
@@ -590,6 +657,58 @@ template: conteudo
 template: splash
 
 # Docker Containers Network
-### Rede
+### interligando containers
 
+---
+template: conteudo
 
+# Visão geral de rede no Docker
+
+- Conteiners precisam falar com o mundo
+- Conteiners proveem serviços, o mundo precisa falar com eles
+- Conteiners precisam falar uns com os outros
+  - Localmente
+  - Entre Hosts
+- Como fazer descoberta de serviços providos pelos containers
+- Load Balance
+-
+
+---
+
+# Visão Geral Rede Docker
+
+- docker run -p
+- docker container port
+- Just Works (DEV/STAGE)
+
+???
+ - expoe porta do host
+ - Mostra portas expostas no HOST
+ - Baterias inclusas mas removiveis
+
+---
+
+# Padrão de rede no Docker
+
+ - Conectar em uma rede bridge padrão (docker0)
+ - Redebe IP da rede padrão e acessa o mundo por NAT do host
+ - Podem acessar uns aos outros sem o -p
+ - Melhor prática criar uma rede propria
+
+---
+
+#Comandos Rede
+
+- Listar redes: docker network ls
+- Descrever rede: docker network inspect <NOME/ID>
+- Criar rede: docker netwrok create --driver
+- Conectar container à rede: docker network connect
+- Desconectar container à rede: docker network disconnect
+
+---
+#LAB
+ - Criar uma rede
+ - subir um container nessa rede
+ - Listar informação da rede
+ - anexar a rede a outro container
+ - retirar rede do container.
