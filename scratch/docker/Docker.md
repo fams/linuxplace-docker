@@ -27,8 +27,7 @@ template: conteudo
 
 ### Dia 1
  - Por que usar Containers?
- - Instalando em Linux
- - Docker em Windows
+ - Instalando Docker
  - Docker Containers
  - Docker Images
  - Criando uma imagem
@@ -671,7 +670,13 @@ template: conteudo
   - Entre Hosts
 - Como fazer descoberta de serviços providos pelos containers
 - Load Balance
--
+
+???
+ - Nework Brige
+ - Publish port
+ - Networks, drivers
+ - DNS
+ - Load Balance
 
 ---
 
@@ -697,7 +702,7 @@ template: conteudo
 
 ---
 
-#Comandos Rede
+# Comandos Rede
 
 - Listar redes: docker network ls
 - Descrever rede: docker network inspect <NOME/ID>
@@ -706,9 +711,27 @@ template: conteudo
 - Desconectar container à rede: docker network disconnect
 
 ---
+
 #LAB
  - Criar uma rede
- - subir um container nessa rede
+ - Subir um container nessa rede
  - Listar informação da rede
  - anexar a rede a outro container
  - retirar rede do container.
+ - acessar um container pelo outro, por ip e  por nome
+
+---
+
+# DNS RR
+ - Balanceamento por DNS
+ - Implementado pelo daemon
+ - --net-alias <ALIAS>
+
+---
+# LAB DNS RR
+- Criar dois containers NGINX com o mesmo net-alias
+- Executar um container BASH e testar a resolução de nomes
+
+---
+# Network More
+
