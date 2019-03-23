@@ -735,3 +735,25 @@ template: conteudo
 ---
 # Network More
 
+- Bridge
+- Host
+- Overlay
+- Macvlan
+- None
+- Plugins
+
+---
+# CNM
+
+.full-image[![Container Network Model][cnm]]
+[cnm]: /img/cnm.png "Container Network Model"
+
+---
+# Bridge
+.full-image[![Bridge Networkl][bridge1]]
+[bridge-driver]: /img/bridge-driver.png "Bridge Driver"
+
+---
+# Bridge
+.full-image[![Bridge Networkl][bridge1]]
+[bridge-driver]: /img/bridge-driver.png "Bridge Driver"
