@@ -46,6 +46,13 @@
 /*        top:50%;*/
         /*vertical-align: middle;*/
         margin-top: 20px;
+        margin-bottom: 10px
+      }
+      .small-image-height img{
+        height: 80%;
+/*        top:50%;*/
+        /*vertical-align: middle;*/
+        margin-top: 20px;
       }
       .half-image img{
         width: 50%;
@@ -82,7 +89,38 @@
     </style>
   </head>
   <body>
-<a href=dia1.html><h1>DIA 1</h1></a>
-<a href=dia2.html><h1>DIA 2</h1></a>
+    <textarea id="source">
+
+class: center, middle
+
+# My Awesome Presentation
+
+???
+
+Notes for the _first_ slide!
+
+---
+
+# Agenda
+
+1. Introduction
+2. Deep-dive
+3. ...
+
+[NOTE]: Note that you need remark.js alongside this html file, but no internet connection.
+---
+
+# Introduction
+
+    </textarea>
+    <script src="out/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+        sourceUrl: 'dia2.md',
+        highlightLanguage: 'javascript',
+        countIncrementalSlides: false
+     });
+    </script>
   </body>
 </html>
