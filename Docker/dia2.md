@@ -340,12 +340,12 @@ template: conteudo
 # Union FS
 
 .full-image-height[![Layers][layer-container]]
-[Layers]: /img/container-layers.jpg "Container Layers"
+[layer-container]: img/container-layers.jpg "Container Layers"
 
 ---
 # Sharing Layers
 .full-image-height[![sharing-layers][sharing-layers]]
-[sharing-layers]: /img/sharing-layerss.jpg "Compartilhando Camadas"
+[sharing-layers]: img/sharing-layerss.jpg "Compartilhando Camadas"
 
 ---
 
@@ -387,7 +387,7 @@ a6af0cd8ec20        46 hours ago        /bin/sh -c apt-get update -y && apt-get 
 
 # overlayfs
 .full-image-height[![Overlay][overlay]]
-[overlay]: /img/overlay_constructs.jpg "Overlay"
+[overlay]: img/overlay_constructs.jpg "Overlay"
 
 ---
 
