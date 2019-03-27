@@ -1,0 +1,22 @@
+version: '3'
+services:
+  contador:
+    image: "fams/contador:latest"
+    ports:
+     - "5000:5000"
+    networks:
+      - contador
+
+  redis:
+    image: "redis:latest"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - contador
+
+networks:
+  contador:
+
+volumes:
+  redis-data:

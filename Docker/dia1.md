@@ -471,8 +471,10 @@ $ docker image push $USERNAME/curso
 - ENV
 - WORKDIR
 - RUN
+- CMD
 - EXPOSE
 - ENTRYPOINT
 - USER
 - STOPSIGNAL
 - VOLUME
+

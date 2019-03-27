@@ -318,3 +318,147 @@ template: conteudo
 # Acesso Externo
 .full-image[![External Access][nat]]
 [nat]: /img/nat.png "External Access"
+
+
+template: splash
+
+# Docker Storage
+### salvando dados
+
+---
+template: conteudo
+
+#Docker StorageDriver
+
+- AUFS
+- OVERLAYFS
+- Outros (zfs,vfs,devicemapping)
+
+---
+
+# Union FS
+
+.full-image-height[![Layers][layer-container]]
+[Layers]: /img/container-layers.jpg "Container Layers"
+
+---
+# Sharing Layers
+.full-image-height[![sharing-layers][sharing-layers]]
+[sharing-layers]: /img/sharing-layerss.jpg "Compartilhando Camadas"
+
+---
+
+# docker history
+
+```bash
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+c91d8abdd65d        46 hours ago        /bin/sh -c #(nop)  ENTRYPOINT ["python3" "-m…   0B
+fdaa2038bdc1        46 hours ago        /bin/sh -c #(nop) WORKDIR /var/www/html         0B
+a6af0cd8ec20        46 hours ago        /bin/sh -c apt-get update -y && apt-get inst…   58.1MB
+27b2f3b8a1a9        46 hours ago        /bin/sh -c #(nop)  EXPOSE 80                    0B
+5aa63ecc9851        46 hours ago        /bin/sh -c #(nop) COPY dir:da83f9bd653600281…   5.01MB
+053f5af46e6a        4 days ago          /bin/sh -c #(nop)  LABEL mantainer=fams@linu…   0B
+9361ce633ff1        2 weeks ago         /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>           2 weeks ago         /bin/sh -c mkdir -p /run/systemd && echo 'do…   7B
+<missing>           2 weeks ago         /bin/sh -c rm -rf /var/lib/apt/lists/*          0B
+<missing>           2 weeks ago         /bin/sh -c set -xe   && echo '#!/bin/sh' > /…   745B
+<missing>           2 weeks ago         /bin/sh -c #(nop) ADD file:c02de920036d851cc…   118MB
+```
+
+---
+# docker inspect
+
+```bash
+....
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/0ac0ccecb9db55bc437bbcb1b6415cb0f7894d9f2f9f5d1dc638864355c73527/diff:/var/lib/docker/overlay2/1adc65d03092b5311b0ffa47c8ff2c9e6305fcc519bad184ba2b853447daf6ab/diff:/var/lib/docker/overlay2/05f07100fd62dec715148930a61e860e03e16416d406fe430f75ca0821166544/diff:/var/lib/docker/overlay2/482336a2284a8e36ae414a09cff7cd7b19b568036e20d39a2f94b63424cc856e/diff:/var/lib/docker/overlay2/2884ef4ca82a3cb86d922baed157777ed0b531b1a0e540a2e382e1296773e8d2/diff",
+                "MergedDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/merged",
+                "UpperDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/diff",
+                "WorkDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/work"
+            },
+            "Name": "overlay2"
+        },
+...
+```
+
+---
+
+# overlayfs
+.full-image-height[![Overlay][overlay]]
+[overlay]: /img/overlay_constructs.jpg "Overlay"
+
+---
+
+#Volumes
+- Volumes não são camadas!
+- Não armazene dados no container
+- Não armazene logs no container
+
+---
+# Shared Storage (no mesmo host)
+- Volume do storage
+```bash
+$ docker volume create mydata
+$ docker run -it --rm -v mydata:/mnt busybox bash
+$ docker run -it --rm -v mydata:/mnt busybox bash
+```
+
+---
+# NFS
+- Compartilhado na rede
+
+```bash
+$ docker volume create --opt nfs type=nfs \
+  --opt o=addr=192.168.0.5,rw  \
+  --opt device=:/volume1/docker \
+  nfs
+```
+
+---
+
+#Plugins
+- Extende o docker daemon
+- Multiplos vendors
+- Instalação do plugin no host, docker create, profit
+
+---
+# Plugins Ex:
+- iscsi
+- ebs
+- ceph
+- nutanix
+- purestorage
+- GlusterFS
+- vmdk
+- ...
+
+---
+#Nutanix Plugin!
+- Preparação do Host
+1. apt-get install open-iscsi
+2. systemd-tmpfiles --create
+3. systemctl start iscsid
+4. systemctl enable iscsid
+5. Ensure iscsid is running using: systemctl status iscsid
+
+---
+# Instalando o plugin
+```bash
+docker plugin install ntnx/nutanix_volume_plugin:[TAG] \
+  PRISM_IP="prism-ip" \
+  DATASERVICES_IP="dataservices-ip" \
+  PRISM_PASSWORD="prism-passwd" \
+  PRISM_USERNAME="username" \
+  DEFAULT_CONTAINER="some-storage-container" \
+  --alias nutanix
+```
+
+#Criando o volume
+```bash
+docker volume create <volume_name> \
+ --driver nutanix \
+ --opt sizeMb=size
+```
+
+---
