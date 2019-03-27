@@ -319,6 +319,7 @@ template: conteudo
 .full-image[![External Access][nat]]
 [nat]: /img/nat.png "External Access"
 
+---
 
 template: splash
 
