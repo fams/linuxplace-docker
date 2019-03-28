@@ -345,7 +345,7 @@ template: conteudo
 ---
 # Sharing Layers
 .full-image-height[![sharing-layers][sharing-layers]]
-[sharing-layers]: img/sharing-layerss.jpg "Compartilhando Camadas"
+[sharing-layers]: img/sharing-layers.jpg "Compartilhando Camadas"
 
 ---
 
@@ -373,10 +373,18 @@ a6af0cd8ec20        46 hours ago        /bin/sh -c apt-get update -y && apt-get 
 ....
         "GraphDriver": {
             "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/0ac0ccecb9db55bc437bbcb1b6415cb0f7894d9f2f9f5d1dc638864355c73527/diff:/var/lib/docker/overlay2/1adc65d03092b5311b0ffa47c8ff2c9e6305fcc519bad184ba2b853447daf6ab/diff:/var/lib/docker/overlay2/05f07100fd62dec715148930a61e860e03e16416d406fe430f75ca0821166544/diff:/var/lib/docker/overlay2/482336a2284a8e36ae414a09cff7cd7b19b568036e20d39a2f94b63424cc856e/diff:/var/lib/docker/overlay2/2884ef4ca82a3cb86d922baed157777ed0b531b1a0e540a2e382e1296773e8d2/diff",
-                "MergedDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/merged",
-                "UpperDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/diff",
-                "WorkDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/work"
+                "LowerDir": "/var/lib/docker/overlay2/0ac0ccecb9db55bc437bbcb1b641 5cb0f7894d9f2f9f5d1dc638864355c73527/diff:/var/lib/docker/overlay2/1adc65d03092b5311b0ffa47c8ff2c9e6305fcc519bad184ba2b8534
+                  47daf6ab/diff:/var/lib/docker/overlay2/05f07100fd62dec715148930a61
+                  e860e03e16416d406fe430f75ca0821166544/diff:/var/lib/docker/overlay2/
+                  482336a2284a8e36ae414a09cff7cd7b19b568036e20d39a2f94b63424cc856e/
+                  diff:/var/lib/docker/overlay2/2884ef4ca82a3cb86d922baed157777ed0b
+                  531b1a0e540a2e382e1296773e8d2/diff",
+                "MergedDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205
+                634a6b4a5d5f1a19d0a0918a89d857b17fbea44fb/merged",
+                "UpperDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a
+                5d5f1a19d0a0918a89d857b17fbea44fb/diff",
+                "WorkDir": "/var/lib/docker/overlay2/ca6605593282b550e58b205634a6b4a
+                5d5f1a19d0a0918a89d857b17fbea44fb/work"
             },
             "Name": "overlay2"
         },
