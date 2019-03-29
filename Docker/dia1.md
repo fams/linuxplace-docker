@@ -98,7 +98,7 @@ template: conteudo
 # Docker é sobre deployment
 
 .full-image[![Historia do Deployment][deployment_history]]
-[deployment_history]: /img/deployment-maturity.png "Historia do Deployment"
+[deployment_history]: img/deployment-maturity.png "Historia do Deployment"
 
 ???
 - Manual de instalação
@@ -156,7 +156,7 @@ template: conteudo
 
 # Lifecycle versions
 .full-image[![Life Cycle][lifecycle]]
-[lifecycle]: /img/lifecycle.png "Ciclo de Vida Docker CE/EE"
+[lifecycle]: img/lifecycle.png "Ciclo de Vida Docker CE/EE"
 
 ---
 
@@ -165,7 +165,7 @@ template: conteudo
 ### Virtualização de Sistema Operacional
 .nb-table[
 <table>
-<tr><td>.half-image[![Container x Instance](/img/container_stack.png)]</td><td> .half-image[![Container x Instance](/img/vm_stack.png)]</td></tr>
+<tr><td>.half-image[![Container x Instance](img/container_stack.png)]</td><td> .half-image[![Container x Instance](img/vm_stack.png)]</td></tr>
 </table>
 ]
 

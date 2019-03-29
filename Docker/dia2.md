@@ -278,11 +278,25 @@ template: conteudo
  - Implementado pelo daemon
  - --net-alias <ALIAS>
 
+
+
 ---
 # LAB DNS RR
 - Criar dois containers NGINX com o mesmo net-alias
 - Executar um container BASH e testar a resolução de nomes
 
+--
+```bash
+$ docker run --net-alias nginx --name nginx01 -d nginx:latest
+$ docker run --net-alias nginx --name nginx02 -d nginx:latest
+```
+```
+--
+```bash
+$ docker network create --driver bridge curso_net
+$ docker run --net-alias nginx --name nginx01 --network curso_net -d nginx:latest
+$ docker run --net-alias nginx --name nginx02 --network curso_net  -d nginx:latest
+```
 ---
 # Network More
 
@@ -297,27 +311,27 @@ template: conteudo
 # CNM
 
 .full-image-height[![Container Network Model][cnm]]
-[cnm]: /img/cnm.png "Container Network Model"
+[cnm]: img/cnm.png "Container Network Model"
 
 ---
 #Host Driver
 .full-image-height[![Host Networkl][host-driver]]
-[host-driver]: /img/host-driver.png "Host Driver"
+[host-driver]: img/host-driver.png "Host Driver"
 
 ---
 # Bridge
 .full-image-height[![Bridge Networkl][bridge-driver]]
-[bridge-driver]: /img/bridge-driver.png "Bridge Driver"
+[bridge-driver]: img/bridge-driver.png "Bridge Driver"
 
 ---
 # Bridge
 .full-image-height[![Bridge Networkl][bridge2]]
-[bridge2]: /img/bridge2.png "Bridge Driver"
+[bridge2]: img/bridge2.png "Bridge Driver"
 
 ---
 # Acesso Externo
 .full-image[![External Access][nat]]
-[nat]: /img/nat.png "External Access"
+[nat]: img/nat.png "External Access"
 
 ---
 
@@ -471,3 +485,11 @@ docker volume create <volume_name> \
 ```
 
 ---
+
+template: splash
+
+# Docker Security
+### interligando containers
+
+---
+template: conteudo
