@@ -43,7 +43,8 @@ template: conteudo
 # Iniciando containers intergrados
 ```bash
 $ docker network create curso
-$ docker run -d --network curso --name redis redis -v ./redis-data:/data
+$ docker run -d --network curso --name redis -v ./redis-data:/data redis
+$ docker build -t contador github.com/fams/contador-sessao.git
 $ docker run -d --network curso --name contador -p 5000:5000 contador
 ```
 
