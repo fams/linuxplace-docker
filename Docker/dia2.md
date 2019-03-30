@@ -412,6 +412,14 @@ a6af0cd8ec20        46 hours ago        /bin/sh -c apt-get update -y && apt-get 
 [overlay]: img/overlay_constructs.jpg "Overlay"
 
 ---
+#Overlay FS DIY
+```bash
+$ sudo su -
+# mkdir /mnt/{merged,upper,lower,workdir}
+# mount -t overlay overlay2 -o lowerdir=/mnt/lower/,upperdir=/mnt/uper/, \
+  workdir=/mnt/workdir/ /mnt/merged/
+$ cd /mnt/merged
+```
 
 #Volumes
 - Volumes não são camadas!
@@ -489,7 +497,41 @@ docker volume create <volume_name> \
 template: splash
 
 # Docker Security
-### interligando containers
+### Security By Default
 
 ---
 template: conteudo
+# Proteção por camadas
+- Namespaces
+- Cgroups
+- Capabilities
+- LSM
+- SecComp
+
+---
+# Namespaces
+- usermap not default
+```bash
+$
+```
+
+---
+# Capabilities
+
+    "CAP_CHOWN",
+    "CAP_DAC_OVERRIDE",
+    "CAP_FSETID",
+    "CAP_FOWNER",
+    "CAP_MKNOD",
+    "CAP_NET_RAW",
+    "CAP_SETGID",
+    "CAP_SETUID",
+    "CAP_SETFCAP",
+    "CAP_SETPCAP",
+    "CAP_NET_BIND_SERVICE",
+    "CAP_SYS_CHROOT",
+    "CAP_KILL",
+    "CAP_AUDIT_WRITE"
+
+---
+
