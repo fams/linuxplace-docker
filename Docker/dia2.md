@@ -1,3 +1,4 @@
+
 name: splash
 layout: true
 class: center, middle, inverse
@@ -42,10 +43,10 @@ template: conteudo
 
 # Iniciando containers intergrados
 ```bash
-$ docker network create curso
-$ docker run -d --network curso --name redis -v ./redis-data:/data redis
+$ docker network create contador
+$ docker run -d --network contador --name redis -v redis-data:/data redis
 $ docker build -t contador github.com/fams/contador-sessao.git
-$ docker run -d --network curso --name contador -p 5000:5000 contador
+$ docker run -d --network contador --name contador -p 5000:5000 contador
 ```
 
 ---
@@ -494,31 +495,134 @@ docker volume create <volume_name> \
 ```
 
 ---
-
 template: splash
 
 # Docker Security
-### Security By Default
+### Security By Default?
 
 ---
 template: conteudo
+
+# Segurança em Docker
+- Valem-se as mesmas regras
+- Segurança em profundidade
+- Processo e não projeto
+- Menor privilégio
+- Maior Preocupação com comunicação
+
+---
 # Proteção por camadas
 - Namespaces
 - Cgroups
 - Capabilities
-- LSM
 - SecComp
+- LSM
 
 ---
-# Namespaces
-- usermap not default
+
+# Build Ship and RUN
+- BUILD
+ - Image security
+ - Software Security
+ - Workstation Security
+
+- SHIP
+ - Signing Images
+ - Transport Layer Security
+ - Registry Security
+
+- RUN
+ - Container Security
+ - Host Security
+ - Daemon Security
+ - Network Security
+
+---
+# Diagrama
+.full-image[![Secrity Diagram][security-diagram]]
+[security-diagram]: img/security_diagram_docker.png "Lifecycle"
+
+---
+# Segurança da imagem
+- Imagens base seguras
+- Se possível base from scratch
+- Scan de Vulnerabilidades na imagem
+ - DTR (Docker)
+ - Container Analysis (GCP)
+ - Clair (CoreOs)
+ - quay.io
+ - aquasec.com
+
+---
+# Menor Privilégio
+- Não execute root
+- Unix Model (KISS)
+- Remove Capabilities
+- Seccomp Profiles
+- SELinux
+
+---
+# Trusted Images
+- Notary
+- DTR
+
+.full-image[![Proteja o Lifecycle][lifecycle]]
+[lifecycle]: img/DTR-orchestration-security_0.png "Lifecycle"
+
+---
+#Microservices x monolitic
+- Function Call == switch context
+- Function Call == RPC!
+--
+- Network Security
+ - mTLS
+ - Authentication/Autorization
+ - Security Boundaries
+ - SDN
+ - OVERLAY
+ - ipsec
+
+---
+# Lab (Build From Scratch)
+- Considere Build from scrach
 ```bash
-$
+FROM scratch
+
+WORKDIR /root/
+
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /go/bin/myweb .
+COPY Docker/ .
+...
 ```
 
 ---
-# Capabilities
+#Habilite o Usermap
+```bash
+docker run -it -v /tmp:/tmp
+touch /tmp/arquivoroot
+exit
+ls -lart /tmp
+```
+- Habilitar no /etc/docker/daemon.json
 
+```json
+{
+  "userns-remap": "default"
+}
+```
+- definir o remap
+
+```bash
+#cat /etc/subuid
+dockremap:100000:65536
+#cat /etc/subgid
+dockremap:100000:65536
+```
+
+---
+# Execute sem capabilities
+```text
     "CAP_CHOWN",
     "CAP_DAC_OVERRIDE",
     "CAP_FSETID",
@@ -533,6 +637,32 @@ $
     "CAP_SYS_CHROOT",
     "CAP_KILL",
     "CAP_AUDIT_WRITE"
+```
+# Execute Sem capabilities
+```bash
+docker run -it --cap-drop=NET_RAW bash
+PING www.uol.com.br (13.33.131.51): 56 data bytes
+ping: permission denied (are you root?)
+```
 
 ---
+#AppArmor
 
+```bash
+#ls /etc/apparmor.d/
+#docker run --rm -i --security-opt apparmor=no-ping bash
+``
+---
+# CIS Benchmark
+```bash
+docker run -it --net host --pid host --userns host --cap-add audit_control \
+    -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
+    -v /etc:/etc \
+    -v /usr/bin/docker-containerd:/usr/bin/docker-containerd \
+    -v /usr/bin/docker-runc:/usr/bin/docker-runc \
+    -v /usr/lib/systemd:/usr/lib/systemd \
+    -v /var/lib:/var/lib \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    --label docker_bench_security \
+    docker/docker-bench-security
+``
