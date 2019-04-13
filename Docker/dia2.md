@@ -423,6 +423,7 @@ $ sudo su -
 $ cd /mnt/merged
 ```
 
+---
 #Volumes
 - Volumes não são camadas!
 - Não armazene dados no container
@@ -610,9 +611,37 @@ template: conteudo
 - Menos Binarios, Menos problemas? Shellcode?
 - Mais rápido
 
+---
+
 # Seccomp Profiles
 
+---
 
+# Lab Docker content trust
+## Assinando o container
+```bash
+export DOCKER_CONTENT_TRUST=1
+docker tag curso:go fams/curso:trusted
+docker push fams/curso:trusted
+```
+## Baixando imagem assinada
+```bash
+docker pull fams/curso:trusted
+```
+
+---
+# Lab Docker content trust
+## Enviando imagem nao assinada
+```bash
+unset DOCKER_CONTENT_TRUST
+docker tag curso:python fams/curso:untrusted
+```
+## Baixando imagem não assinada
+```bash
+docker pull fams/curso:untrusted
+```
+
+---
 # Lab (Build From Scratch)
 - Considere Build from scrach
 
@@ -626,6 +655,7 @@ COPY --from=builder /go/bin/myweb .
 COPY Docker/ .
 ...
 ```
+- https://github.com/fams/linuxplace-docker/Docker/Dockerfile-go
 
 ---
 #Habilite o Usermap
