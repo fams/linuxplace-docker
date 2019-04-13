@@ -583,8 +583,39 @@ template: conteudo
  - ipsec
 
 ---
+#Attack Surface
+- HOST OS:
+  - Hardening OS
+  - isolamento
+  - logging
+  - menor privilégio
+  - menor acesso
+- Credentials
+  - Menor privilegio
+  - menor acesso
+  - menor tempo
+  - key-based
+
+---
+#Host OS
+- CoreOS
+- RancherOS
+- Alpine
+- Menos Binarios, Menos problemas
+
+---
+# Base System
+- Alpine
+- Scratch
+- Menos Binarios, Menos problemas? Shellcode?
+- Mais rápido
+
+# Seccomp Profiles
+
+
 # Lab (Build From Scratch)
 - Considere Build from scrach
+
 ```bash
 FROM scratch
 
@@ -614,9 +645,9 @@ ls -lart /tmp
 - definir o remap
 
 ```bash
-#cat /etc/subuid
+# cat /etc/subuid
 dockremap:100000:65536
-#cat /etc/subgid
+# cat /etc/subgid
 dockremap:100000:65536
 ```
 
@@ -638,6 +669,9 @@ dockremap:100000:65536
     "CAP_KILL",
     "CAP_AUDIT_WRITE"
 ```
+
+---
+
 # Execute Sem capabilities
 ```bash
 docker run -it --cap-drop=NET_RAW bash
@@ -649,8 +683,8 @@ ping: permission denied (are you root?)
 #AppArmor
 
 ```bash
-#ls /etc/apparmor.d/
-#docker run --rm -i --security-opt apparmor=no-ping bash
+$ ls /etc/apparmor.d/
+$ docker run --rm -i --security-opt apparmor=no-ping bash
 ```
 ---
 # CIS Benchmark
@@ -665,4 +699,4 @@ docker run -it --net host --pid host --userns host --cap-add audit_control \
     -v /var/run/docker.sock:/var/run/docker.sock \
     --label docker_bench_security \
     docker/docker-bench-security
-``
+```
