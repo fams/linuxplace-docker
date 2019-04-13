@@ -651,7 +651,7 @@ ping: permission denied (are you root?)
 ```bash
 #ls /etc/apparmor.d/
 #docker run --rm -i --security-opt apparmor=no-ping bash
-``
+```
 ---
 # CIS Benchmark
 ```bash
